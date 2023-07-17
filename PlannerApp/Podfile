@@ -1,0 +1,18 @@
+# Uncomment the next line to define a global platform for your project
+platform :ios, '13.0'
+
+target 'PlannerApp' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Firebase
+  pod 'FirebaseAnalytics'
+  pod 'FirebaseAuth'
+  pod 'FirebaseFirestore'
+
+  # RxSwift
+  pod 'RxSwift'
+  pod 'RxCocoa'
+  pod 'RxDataSources'
+
+end

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 55;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -12,9 +12,12 @@
 		90D8E7422A6547630043312D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90D8E7412A6547630043312D /* ViewController.swift */; };
 		90D8E7472A6547650043312D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 90D8E7462A6547650043312D /* Assets.xcassets */; };
 		90D8E74A2A6547650043312D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 90D8E7482A6547650043312D /* LaunchScreen.storyboard */; };
+		D9B63A9CC65D740ED5ADE913 /* Pods_PlannerApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 180CA36EB1FEB9A80EC4E315 /* Pods_PlannerApp.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		180CA36EB1FEB9A80EC4E315 /* Pods_PlannerApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PlannerApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		42DF7655E837E6D51FB4BA1C /* Pods-PlannerApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlannerApp.release.xcconfig"; path = "Target Support Files/Pods-PlannerApp/Pods-PlannerApp.release.xcconfig"; sourceTree = "<group>"; };
 		90D8E73A2A6547630043312D /* PlannerApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlannerApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		90D8E73D2A6547630043312D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		90D8E73F2A6547630043312D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -22,6 +25,7 @@
 		90D8E7462A6547650043312D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		90D8E7492A6547650043312D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		90D8E74B2A6547650043312D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E0BD19DAF0547A81D5C18BD5 /* Pods-PlannerApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlannerApp.debug.xcconfig"; path = "Target Support Files/Pods-PlannerApp/Pods-PlannerApp.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,17 +33,38 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D9B63A9CC65D740ED5ADE913 /* Pods_PlannerApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		23CCB48B8DF38EFC994C66A3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				180CA36EB1FEB9A80EC4E315 /* Pods_PlannerApp.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		359285FC9E9145CDF11D5D7E /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				E0BD19DAF0547A81D5C18BD5 /* Pods-PlannerApp.debug.xcconfig */,
+				42DF7655E837E6D51FB4BA1C /* Pods-PlannerApp.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		90D8E7312A6547630043312D = {
 			isa = PBXGroup;
 			children = (
 				90D8E73C2A6547630043312D /* PlannerApp */,
 				90D8E73B2A6547630043312D /* Products */,
+				359285FC9E9145CDF11D5D7E /* Pods */,
+				23CCB48B8DF38EFC994C66A3 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -87,9 +112,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 90D8E74E2A6547650043312D /* Build configuration list for PBXNativeTarget "PlannerApp" */;
 			buildPhases = (
+				7FA9F442462CB52FEC699F58 /* [CP] Check Pods Manifest.lock */,
 				90D8E7362A6547630043312D /* Sources */,
 				90D8E7372A6547630043312D /* Frameworks */,
 				90D8E7382A6547630043312D /* Resources */,
+				F051A168C1B81EDE21391F49 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -116,7 +143,7 @@
 				};
 			};
 			buildConfigurationList = 90D8E7352A6547630043312D /* Build configuration list for PBXProject "PlannerApp" */;
-			compatibilityVersion = "Xcode 14.0";
+			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -144,6 +171,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		7FA9F442462CB52FEC699F58 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-PlannerApp-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F051A168C1B81EDE21391F49 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PlannerApp/Pods-PlannerApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PlannerApp/Pods-PlannerApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PlannerApp/Pods-PlannerApp-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		90D8E7362A6547630043312D /* Sources */ = {
@@ -286,6 +355,7 @@
 		};
 		90D8E74F2A6547650043312D /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E0BD19DAF0547A81D5C18BD5 /* Pods-PlannerApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -313,6 +383,7 @@
 		};
 		90D8E7502A6547650043312D /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 42DF7655E837E6D51FB4BA1C /* Pods-PlannerApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
