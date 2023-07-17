@@ -54,7 +54,6 @@
 				E0BD19DAF0547A81D5C18BD5 /* Pods-PlannerApp.debug.xcconfig */,
 				42DF7655E837E6D51FB4BA1C /* Pods-PlannerApp.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -364,6 +363,8 @@
 				DEVELOPMENT_TEAM = F537M69Z9J;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PlannerApp/Resources/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Planner;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -392,6 +393,8 @@
 				DEVELOPMENT_TEAM = F537M69Z9J;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PlannerApp/Resources/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Planner;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
