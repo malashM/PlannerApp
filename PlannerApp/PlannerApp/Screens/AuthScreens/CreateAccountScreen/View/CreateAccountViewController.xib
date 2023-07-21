@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="UIViewController" customModule="PlannerApp" customModuleProvider="target">
+            <connections>
+                <outlet property="createButton" destination="QCW-67-xdF" id="bcd-xS-HDK"/>
+                <outlet property="emailTextField" destination="4SH-Bg-0f2" id="aZ2-N2-Qle"/>
+                <outlet property="newPasswordTextField" destination="cNo-uD-KZP" id="Z6h-SN-idC"/>
+                <outlet property="view" destination="iN0-l3-epB" id="FcH-XH-1UY"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="4SH-Bg-0f2">
+                    <rect key="frame" x="16" y="75" width="361" height="34"/>
+                    <color key="backgroundColor" systemColor="secondarySystemFillColor"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" keyboardType="emailAddress" returnKeyType="next" enablesReturnKeyAutomatically="YES" textContentType="email"/>
+                </textField>
+                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="cNo-uD-KZP">
+                    <rect key="frame" x="16" y="125" width="361" height="34"/>
+                    <color key="backgroundColor" systemColor="secondarySystemFillColor"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" returnKeyType="continue" enablesReturnKeyAutomatically="YES" secureTextEntry="YES" textContentType="new-password"/>
+                </textField>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QCW-67-xdF">
+                    <rect key="frame" x="16" y="751.66666666666663" width="361" height="50.333333333333371"/>
+                    <state key="normal" title="Button"/>
+                    <buttonConfiguration key="configuration" style="filled" title="Create" buttonSize="large"/>
+                </button>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="cNo-uD-KZP" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="0Oq-ea-LzS"/>
+                <constraint firstItem="4SH-Bg-0f2" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="16" id="AQq-s2-7vk"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="QCW-67-xdF" secondAttribute="trailing" constant="16" id="AxC-q7-CUq"/>
+                <constraint firstItem="QCW-67-xdF" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="Bwd-pH-wrX"/>
+                <constraint firstItem="4SH-Bg-0f2" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="Rq0-MU-YLa"/>
+                <constraint firstItem="cNo-uD-KZP" firstAttribute="top" secondItem="4SH-Bg-0f2" secondAttribute="bottom" constant="16" id="WN5-qv-QZn"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="QCW-67-xdF" secondAttribute="bottom" constant="16" id="dBW-JH-eFN"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="4SH-Bg-0f2" secondAttribute="trailing" constant="16" id="q3E-ak-1ou"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="cNo-uD-KZP" secondAttribute="trailing" constant="16" id="yR5-lz-f7R"/>
+            </constraints>
+            <point key="canvasLocation" x="51" y="20"/>
+        </view>
+    </objects>
+    <resources>
+        <systemColor name="secondarySystemFillColor">
+            <color red="0.47058823529411764" green="0.47058823529411764" blue="0.50196078431372548" alpha="0.16" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
