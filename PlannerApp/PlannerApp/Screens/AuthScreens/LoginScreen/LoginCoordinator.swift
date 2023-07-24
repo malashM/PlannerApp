@@ -26,7 +26,9 @@ final class LoginCoordinator: Coordinator {
     
     func goToHomeScreen() {
         let homeCoordinator = HomeCoordinator(navigationController: navigationController)
-        goNext(homeCoordinator)
+        let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
+        homeCoordinator.start(nil)
+        sceneDelegate?.coordinator = homeCoordinator
     }
     
     func goToResetPasswordScreen() {

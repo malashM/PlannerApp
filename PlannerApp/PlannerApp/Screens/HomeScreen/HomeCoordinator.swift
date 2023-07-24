@@ -18,9 +18,17 @@ final class HomeCoordinator: Coordinator {
     }
     
     func start(_ initialData: Model?) {
-        let viewModel = HomeViewModel()
+        let authManager = AuthManager()
+        let viewModel = HomeViewModel(authManager: authManager)
         let vc = HomeViewController(coordinator: self, viewModel: viewModel)
-        navigationController.pushViewController(vc, animated: true)
+        navigationController.setViewControllers([vc], animated: true)
+    }
+    
+    func goToMainScreen() {
+        let mainCoordinator = MainCoordinator(navigationController: navigationController)
+        let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
+        mainCoordinator.start(nil)
+        sceneDelegate?.coordinator = mainCoordinator
     }
     
 }

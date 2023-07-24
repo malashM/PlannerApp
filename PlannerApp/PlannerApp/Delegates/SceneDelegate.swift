@@ -10,7 +10,7 @@ import UIKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var window: UIWindow?
-    var mainCoordinator: Coordinator?
+    var coordinator: Coordinator?
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         
@@ -52,8 +52,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 private extension SceneDelegate {
     func configureScene(with windowScene: UIWindowScene) {
         let navController = UINavigationController()
-        self.mainCoordinator = MainCoordinator(navigationController: navController)
-        self.mainCoordinator?.start(nil)
+        self.coordinator = MainCoordinator(navigationController: navController)
+        self.coordinator?.start(nil)
         self.window = UIWindow(windowScene: windowScene)
         self.window?.rootViewController = navController
         self.window?.makeKeyAndVisible()

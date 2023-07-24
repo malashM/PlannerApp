@@ -33,6 +33,7 @@ struct Constants {
     struct ButtonTitles {
         static let okTitle = "Ok"
         static let login = "Log In"
+        static let logOut = "Log Out"
         static let forgotPassword = "Forgot Password?"
         static let createAccount = "Create Account"
         static let resetPassword = "Reset Password"

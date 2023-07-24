@@ -27,6 +27,17 @@ final class AuthManager: AuthenticationReading, AuthenticationWriting {
     
     var isLoading: Driver<Bool> { loadingProcess.asDriver(onErrorJustReturn: false) }
     
+    func logOut() -> Single<AuthDataResult?> {
+        return executeOperation { comletion in
+            do {
+                try Auth.auth().signOut()
+                comletion(nil, nil)
+            } catch (let error) {
+                comletion(nil, error)
+            }
+        }
+    }
+    
     func resetPassword(email: String) -> Single<AuthDataResult?> {
         return executeOperation{ completion in Auth.auth().sendPasswordReset(withEmail: email) { completion(nil, $0) } }
     }

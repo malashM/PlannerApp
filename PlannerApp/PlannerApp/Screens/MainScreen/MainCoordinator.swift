@@ -20,7 +20,7 @@ final class MainCoordinator: Coordinator {
     func start(_ initialData: Model? = nil) {
         let viewModel = MainViewModel()
         let vc = MainViewController(coordinator: self, viewModel: viewModel)
-        navigationController.pushViewController(vc, animated: true)
+        navigationController.setViewControllers([vc], animated: true)
     }
     
     func goToLoginScreen() {
