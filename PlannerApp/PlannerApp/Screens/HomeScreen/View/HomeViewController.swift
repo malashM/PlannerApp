@@ -16,6 +16,7 @@ final class HomeViewController: BaseViewController<HomeViewModel, HomeCoordinato
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+        bindViewModel()
         bindUserInteractions()
     }
     
@@ -25,7 +26,7 @@ final class HomeViewController: BaseViewController<HomeViewModel, HomeCoordinato
 //MARK: - Configure
 private extension HomeViewController {
     func configureUI() {
-        title = Constants.HomeScreen.title
+        title = viewModel.currentUser?.displayName
         let item = UIBarButtonItem(title: Constants.ButtonTitles.logOut, style: .plain, target: self, action: nil)
         navigationItem.rightBarButtonItem = item
     }
@@ -36,13 +37,19 @@ private extension HomeViewController {
 private extension HomeViewController {
     func bindUserInteractions() {
         navigationItem.rightBarButtonItem?.rx.tap
-            .flatMapLatest { [weak self] _ in self?.viewModel.logOut() ?? .just(nil) }
+            .flatMapLatest { [weak self] _ in self?.viewModel.logOut() ?? .just(()) }
             .observe(on: MainScheduler.instance)
             .subscribe(with: self, onNext: { sself, _ in
                 sself.coordinator.goToMainScreen()
             }, onError: { sself, error in
                 sself.showInfoAlert(title: Titles.errorLogin, message: error.localizedDescription)
             })
+            .disposed(by: disposeBag)
+    }
+    
+    func bindViewModel() {
+        viewModel.isLoading
+            .drive(with: self) { sself, isLoading in sself.blockUI(isLoading) }
             .disposed(by: disposeBag)
     }
 }

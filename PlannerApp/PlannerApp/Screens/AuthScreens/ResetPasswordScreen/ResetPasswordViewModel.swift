@@ -11,13 +11,15 @@ import RxCocoa
 
 final class ResetPasswordViewModel: AuthViewModelInterface {
     
-    let authManager: AuthManager
+    private let authManager: AuthManager
+    
+    init(authManager: AuthManager) {
+        self.authManager = authManager
+    }
     
     private let outputEmail = BehaviorRelay<String>(value: "")
     
-    required init(authManager: AuthManager) {
-        self.authManager = authManager
-    }
+    var isLoading: Driver<Bool> { authManager.isLoading }
     
     var allowResetPassword: Driver<Bool> { outputEmail.asDriver().map(isValidEmail) }
     
@@ -25,8 +27,8 @@ final class ResetPasswordViewModel: AuthViewModelInterface {
         email.bind(to: outputEmail).disposed(by: bag)
     }
     
-    func resetPassword() -> Single<AuthDataResult?> {
-        return authManager.resetPassword(email: outputEmail.value)
+    func resetPassword() -> Single<Void> {
+        return authManager.resetPassword(for: outputEmail.value)
     }
     
     func generateModel() -> LoginModel {

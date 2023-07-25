@@ -70,7 +70,7 @@ private extension LoginViewController {
             using: disposeBag
         )
         
-        viewModel.authLoading
+        viewModel.isLoading
             .drive(with: self) { sself, isLoading in sself.blockUI(isLoading) }
             .disposed(by: disposeBag)
         

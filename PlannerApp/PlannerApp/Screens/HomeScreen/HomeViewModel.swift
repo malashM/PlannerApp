@@ -11,13 +11,17 @@ import RxCocoa
 
 final class HomeViewModel: AuthViewModelInterface {
     
-    let authManager: AuthManager
+    private let authManager: AuthManager
     
     init(authManager: AuthManager) {
         self.authManager = authManager
     }
     
-    func logOut() -> Single<AuthDataResult?> {
+    var isLoading: Driver<Bool> { authManager.isLoading }
+    
+    var currentUser: User? { authManager.currentUser }
+    
+    func logOut() -> Single<Void> {
         return authManager.logOut()
     }
     

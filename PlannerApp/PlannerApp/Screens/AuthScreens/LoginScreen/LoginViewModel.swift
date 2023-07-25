@@ -11,16 +11,22 @@ import RxCocoa
 
 final class LoginViewModel: AuthViewModelInterface {
     
-    let authManager: AuthManager
-    
-    private let outputEmail = BehaviorRelay<String>(value: "")
-    private let outputPassword = BehaviorRelay<String>(value: "")
-    private let outputModel = BehaviorRelay<LoginModel?>(value: nil)
+    private let authManager: AuthManager
     
     init(authManager: AuthManager, model: LoginModel?) {
         self.authManager = authManager
         updateModel(model)
     }
+    
+    init(authManager: AuthManager) {
+        self.authManager = authManager
+    }
+    
+    private let outputEmail = BehaviorRelay<String>(value: "")
+    private let outputPassword = BehaviorRelay<String>(value: "")
+    private let outputModel = BehaviorRelay<LoginModel?>(value: nil)
+    
+    var isLoading: Driver<Bool> { authManager.isLoading }
     
     var allowLogin: Driver<Bool> {
         let isValidEmail = outputEmail.asDriver().map(isValidEmail)
@@ -35,8 +41,9 @@ final class LoginViewModel: AuthViewModelInterface {
         password.bind(to: outputPassword).disposed(by: bag)
     }
     
-    func login() -> Single<AuthDataResult?> {
+    func login() -> Single<AuthDataResult> {
         return authManager.login(email: outputEmail.value, password: outputPassword.value)
+            .flatMap { $0.user.isEmailVerified ? .just($0) : .error(CustomError(Constants.Alert.Messages.verifyEmail)) }
     }
     
     func updateModel(_ data: LoginModel?) {

@@ -11,84 +11,161 @@ import RxCocoa
 
 protocol AuthenticationReading {
     var isLoading: Driver<Bool> { get }
+    var currentUser: User? { get }
 }
 
 protocol AuthenticationWriting {
-    associatedtype ResultType
-    func resetPassword(email: String) -> Single<ResultType>
-    func createUser(email: String, password: String) -> Single<ResultType>
-    func login(email: String, password: String) -> Single<ResultType>
-    func deleteUser() -> Single<ResultType>
+    func createUser(email: String, password: String) -> Single<AuthDataResult>
+    func login(email: String, password: String) -> Single<AuthDataResult>
+    func sendEmailVerification(for user: User) -> Single<Void>
+    func setUserName(for user: User, with name: String) -> Single<Void>
+    func resetPassword(for email: String) -> Single<Void>
+    func deleteUser(_ user: User) -> Single<Void>
+    func logOut() -> Single<Void>
 }
 
 final class AuthManager: AuthenticationReading, AuthenticationWriting {
     
-    private let loadingProcess = PublishRelay<Bool>()
+    private let auth: Auth
     
-    var isLoading: Driver<Bool> { loadingProcess.asDriver(onErrorJustReturn: false) }
+    init(auth: Auth = .auth()) {
+        self.auth = auth
+    }
     
-    func logOut() -> Single<AuthDataResult?> {
-        return executeOperation { comletion in
-            do {
-                try Auth.auth().signOut()
-                comletion(nil, nil)
-            } catch (let error) {
-                comletion(nil, error)
+    private let loadingProcess = BehaviorRelay<Bool>(value: false)
+    
+    var isLoading: Driver<Bool> { loadingProcess.asDriver() }
+    
+    var currentUser: User? { auth.currentUser }
+    
+    func createUser(email: String, password: String) -> Single<AuthDataResult> {
+        return executeOperation { [weak self] completion in
+            self?.auth.createUser(withEmail: email, password: password) { result, error in
+                if let error {
+                    completion(.failure(error))
+                } else {
+                    guard let result else { return completion(.failure(CustomError(Constants.Alert.Messages.noUser))) }
+                    result.user.
+                    completion(.success(result))
+                }
             }
         }
     }
     
-    func resetPassword(email: String) -> Single<AuthDataResult?> {
-        return executeOperation{ completion in Auth.auth().sendPasswordReset(withEmail: email) { completion(nil, $0) } }
+    func login(email: String, password: String) -> Single<AuthDataResult> {
+        return executeOperation{ [weak self] completion in
+            self?.auth.signIn(withEmail: email, password: password) { result, error in
+                if let error {
+                    completion(.failure(error))
+                } else {
+                    guard let result else { return completion(.failure(CustomError(Constants.Alert.Messages.noUser))) }
+                    
+                    completion(.success(result))
+                }
+            }
+        }
     }
     
-    func createUser(email: String, password: String) -> Single<AuthDataResult?> {
+    func sendEmailVerification(for user: User) -> Single<Void> {
         return executeOperation { completion in
-            Auth.auth().createUser(withEmail: email, password: password) { result, error in
-                if let error { completion(nil, error) }
-                result?.user.sendEmailVerification { completion(result, $0) }
+            user.sendEmailVerification() { error in
+                if let error {
+                    completion(.failure(error))
+                } else {
+                    completion(.success(()))
+                }
             }
         }
     }
     
-    func login(email: String, password: String) -> Single<AuthDataResult?> {
-        return executeOperation{ completion in
-            Auth.auth().signIn(withEmail: email, password: password) { result, error in
-                if let error { completion(nil, error) }
-                result?.user.isEmailVerified == true
-                ? completion(result, error)
-                : completion(nil, CustomError(Constants.Alert.Messages.verifyEmail))
+    func setUserName(for user: User, with name: String) -> Single<Void> {
+        return executeOperation { [weak self] result in self?.setUserName(for: user, with: name, result) }
+    }
+    
+    func resetPassword(for email: String) -> Single<Void> {
+        return executeOperation { [weak self] completion in
+            self?.auth.sendPasswordReset(withEmail: email) { error in
+                if let error {
+                    completion(.failure(error))
+                } else {
+                    completion(.success(()))
+                }
             }
         }
     }
     
-    func deleteUser() -> Single<AuthDataResult?> {
-        let user = Auth.auth().currentUser
-        let error = CustomError(Constants.Alert.Messages.noUser)
-        guard let user else { return Single.error(error) }
-        return executeOperation { completion in user.delete { completion(nil, $0) } }
+    func deleteUser(_ user: User) -> Single<Void> {
+        return executeOperation { completion in
+            user.delete { error in
+                if let error {
+                    completion(.failure(error))
+                } else {
+                    completion(.success(()))
+                }
+            }
+            
+        }
     }
+    
+    func logOut() -> Single<Void> {
+        return executeOperation { [weak self] completion in
+            guard let self else {
+                return completion(.failure(CustomError("\(String(describing: self)) has been deallocated.")))
+            }
+            do {
+                try self.auth.signOut()
+                completion(.success(()))
+            } catch {
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    deinit {
+        print("----->deinit: \(String(describing: self))")
+    }
+    
 }
 
 
 //MARK: - Private Methods
 private extension AuthManager {
     
-    typealias Completion = (@escaping (AuthDataResult?, Error?) -> Void) -> Void
+    typealias Completion<T> = (@escaping (Result<T, Error>) -> Void) -> Void
     
-    private func executeOperation(_ operation: @escaping Completion) -> Single<AuthDataResult?> {
+    func executeOperation<T>(_ operation: @escaping Completion<T>) -> Single<T> {
         return Single.deferred {
             return Single.create { [weak self] single in
-                self?.loadingProcess.accept(true)
-                operation { result, error in
-                    defer { self?.loadingProcess.accept(false) }
-                    if let error = error {
+                guard let self else {
+                    single(.failure(CustomError("\(String(describing: self)) has been deallocated.")))
+                    return Disposables.create()
+                }
+                self.loadingProcess.accept(true)
+                print("----> loadingProcess.accept(true)")
+                operation { [weak self] result in
+                    defer { self?.loadingProcess.accept(false)
+                        print("----> loadingProcess.accept(false)")
+                    }
+                    switch result {
+                    case .success(let data):
+                        single(.success(data))
+                    case .failure(let error):
                         single(.failure(error))
-                    } else {
-                        single(.success(result))
                     }
                 }
                 return Disposables.create()
+            }
+        }
+    }
+    
+    func setUserName(for user: User, with name: String, _ completion: @escaping (Result<Void, Error>) -> Void) {
+        let changeRequest = user.createProfileChangeRequest()
+        changeRequest.displayName = name
+        changeRequest.commitChanges() { error in
+            if let error {
+                completion(.failure(error))
+            } else {
+                completion(.success(()))
             }
         }
     }

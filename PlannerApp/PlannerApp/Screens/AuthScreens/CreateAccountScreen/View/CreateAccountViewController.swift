@@ -10,6 +10,7 @@ import RxCocoa
 
 final class CreateAccountViewController: BaseViewController<CreateAccountViewModel, CreateAccountCoordinator> {
     
+    @IBOutlet private weak var userNameTextField: UITextField!
     @IBOutlet private weak var emailTextField: UITextField!
     @IBOutlet private weak var newPasswordTextField: UITextField!
     @IBOutlet private weak var createButton: UIButton!
@@ -31,13 +32,27 @@ final class CreateAccountViewController: BaseViewController<CreateAccountViewMod
 private extension CreateAccountViewController {
     func configureUI() {
         title = Constants.CreateAccountScreen.title
+        userNameTextField.placeholder = Constants.LoginScreen.namePlaceholder
         emailTextField.placeholder = Constants.LoginScreen.emailPlaceholder
         newPasswordTextField.placeholder = Constants.LoginScreen.passwordPlaceholder
         createButton.setTitle(Constants.ButtonTitles.createAccount, for: .normal)
     }
     
-    func handlerCreateUser() {
+    func validateAndCreateUser() {
+        if viewModel.isValidUserName(userNameTextField.text) && viewModel.isValidEmail(emailTextField.text) {
+            createUser()
+        } else if !viewModel.isValidUserName(userNameTextField.text) {
+            userNameTextField.becomeFirstResponder()
+            showInfoAlert(title: Titles.errorLogin, message: Messages.invalidName)
+        } else {
+            emailTextField.becomeFirstResponder()
+            showInfoAlert(title: Titles.errorLogin, message: Messages.invalidEmail)
+        }
+    }
+    
+    func createUser() {
         viewModel.createUser()
+            .debug("---->")
             .observe(on: MainScheduler.instance)
             .subscribe { [weak self] result in
                 switch result {
@@ -60,9 +75,14 @@ private extension CreateAccountViewController {
 //MARK: Binding
 private extension CreateAccountViewController {
     func bindViewModel() {
-        viewModel.bindInputs(email: emailTextField.rx.text.orEmpty, password: newPasswordTextField.rx.text.orEmpty, using: disposeBag)
+        viewModel.bindInputs(
+            name: userNameTextField.rx.text.orEmpty,
+            email: emailTextField.rx.text.orEmpty,
+            password: newPasswordTextField.rx.text.orEmpty,
+            using: disposeBag
+        )
         
-        viewModel.authLoading
+        viewModel.isLoading
             .drive(with: self) { sself, isLoading in sself.blockUI(isLoading) }
             .disposed(by: disposeBag)
         
@@ -75,7 +95,12 @@ private extension CreateAccountViewController {
     func bindUserInteractions() {
         createButton.rx.bindAction(using: disposeBag) { [weak self] in
             guard let self else { return }
-            self.handlerCreateUser()
+            self.createUser()
+        }
+        
+        userNameTextField.rx.bindAction(using: disposeBag) { [weak self] in
+            guard let self else { return }
+            self.emailTextField.becomeFirstResponder()
         }
         
         emailTextField.rx.bindAction(using: disposeBag) { [weak self] in
@@ -85,12 +110,7 @@ private extension CreateAccountViewController {
         
         newPasswordTextField.rx.bindAction(using: disposeBag) { [weak self] in
             guard let self else { return }
-            if self.viewModel.isValidEmail(self.emailTextField.text) {
-                self.handlerCreateUser()
-            } else {
-                self.emailTextField.becomeFirstResponder()
-                self.showInfoAlert(title: Titles.errorLogin, message: Messages.invalidEmail)
-            }
+            self.validateAndCreateUser()
         }
     }
     

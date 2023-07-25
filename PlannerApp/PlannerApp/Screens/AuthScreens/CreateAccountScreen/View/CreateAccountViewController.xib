@@ -9,11 +9,12 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="UIViewController" customModule="PlannerApp" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CreateAccountViewController" customModule="PlannerApp" customModuleProvider="target">
             <connections>
                 <outlet property="createButton" destination="QCW-67-xdF" id="bcd-xS-HDK"/>
                 <outlet property="emailTextField" destination="4SH-Bg-0f2" id="aZ2-N2-Qle"/>
                 <outlet property="newPasswordTextField" destination="cNo-uD-KZP" id="Z6h-SN-idC"/>
+                <outlet property="userNameTextField" destination="4Ae-xD-SW4" id="V58-ln-Pft"/>
                 <outlet property="view" destination="iN0-l3-epB" id="FcH-XH-1UY"/>
             </connections>
         </placeholder>
@@ -22,14 +23,20 @@
             <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="4SH-Bg-0f2">
+                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="User Name" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="4Ae-xD-SW4">
                     <rect key="frame" x="16" y="75" width="361" height="34"/>
+                    <color key="backgroundColor" systemColor="secondarySystemFillColor"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" returnKeyType="next" enablesReturnKeyAutomatically="YES" textContentType="name"/>
+                </textField>
+                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="4SH-Bg-0f2">
+                    <rect key="frame" x="16" y="125" width="361" height="34"/>
                     <color key="backgroundColor" systemColor="secondarySystemFillColor"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits" keyboardType="emailAddress" returnKeyType="next" enablesReturnKeyAutomatically="YES" textContentType="email"/>
                 </textField>
                 <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="cNo-uD-KZP">
-                    <rect key="frame" x="16" y="125" width="361" height="34"/>
+                    <rect key="frame" x="16" y="175" width="361" height="34"/>
                     <color key="backgroundColor" systemColor="secondarySystemFillColor"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits" returnKeyType="continue" enablesReturnKeyAutomatically="YES" secureTextEntry="YES" textContentType="new-password"/>
@@ -44,12 +51,15 @@
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
                 <constraint firstItem="cNo-uD-KZP" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="0Oq-ea-LzS"/>
-                <constraint firstItem="4SH-Bg-0f2" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="16" id="AQq-s2-7vk"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="4Ae-xD-SW4" secondAttribute="trailing" constant="16" id="7X4-zA-AUS"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="QCW-67-xdF" secondAttribute="trailing" constant="16" id="AxC-q7-CUq"/>
                 <constraint firstItem="QCW-67-xdF" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="Bwd-pH-wrX"/>
+                <constraint firstItem="4Ae-xD-SW4" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="PGH-6k-nPw"/>
+                <constraint firstItem="cNo-uD-KZP" firstAttribute="top" secondItem="4SH-Bg-0f2" secondAttribute="bottom" constant="16" id="PIi-dO-kGe"/>
                 <constraint firstItem="4SH-Bg-0f2" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="Rq0-MU-YLa"/>
-                <constraint firstItem="cNo-uD-KZP" firstAttribute="top" secondItem="4SH-Bg-0f2" secondAttribute="bottom" constant="16" id="WN5-qv-QZn"/>
+                <constraint firstItem="4Ae-xD-SW4" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="16" id="aTr-97-1UY"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="QCW-67-xdF" secondAttribute="bottom" constant="16" id="dBW-JH-eFN"/>
+                <constraint firstItem="4SH-Bg-0f2" firstAttribute="top" secondItem="4Ae-xD-SW4" secondAttribute="bottom" constant="16" id="lbi-th-NyK"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="4SH-Bg-0f2" secondAttribute="trailing" constant="16" id="q3E-ak-1ou"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="cNo-uD-KZP" secondAttribute="trailing" constant="16" id="yR5-lz-f7R"/>
             </constraints>

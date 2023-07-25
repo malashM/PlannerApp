@@ -58,7 +58,7 @@ private extension ResetPasswordViewController {
     func bindViewModel() {
         viewModel.bindInputs(email: emailTextField.rx.text.orEmpty, using: disposeBag)
         
-        viewModel.authLoading
+        viewModel.isLoading
             .drive(with: self) { sself, isLoading in sself.blockUI(isLoading) }
             .disposed(by: disposeBag)
         

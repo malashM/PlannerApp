@@ -8,6 +8,7 @@
 import Foundation
 
 protocol Validatable {
+    func isValidUserName(_ name: String?) -> Bool
     func isValidEmail(_ email: String?) -> Bool
     func isValidPassword(_ password: String?) -> Bool
 }
@@ -24,5 +25,9 @@ extension Validatable {
     
     func isValidPassword(_ password: String?) -> Bool {
         return password?.isEmpty == false
+    }
+    
+    func isValidUserName(_ name: String?) -> Bool {
+        return name?.isEmpty == false
     }
 }
