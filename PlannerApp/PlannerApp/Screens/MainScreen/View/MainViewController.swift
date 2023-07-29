@@ -5,7 +5,7 @@
 //  Created by Mikhail Malaschenko on 18.07.23.
 //
 
-import UIKit
+import RxSwift
 
 final class MainViewController: BaseViewController<MainViewModel, MainCoordinator> {
     
@@ -35,15 +35,17 @@ private extension MainViewController {
 //MARK: Binding
 private extension MainViewController {
     func bindUserInteractions() {
-        loginButton.rx.bindAction(using: disposeBag) { [weak self] in
-            guard let self else { return }
-            self.coordinator.goToLoginScreen()
-        }
+        loginButton
+            .rx
+            .bindAction(using: disposeBag) { [weak self] in
+                self?.coordinator.goToLoginScreen()
+            }
         
-        createAccountButton.rx.bindAction(using: disposeBag) { [weak self] in
-            guard let self else { return }
-            self.coordinator.goToCreateAccountScreen()
-        }
+        createAccountButton
+            .rx
+            .bindAction(using: disposeBag) { [weak self] in
+                self?.coordinator.goToCreateAccountScreen()
+            }
     }
     
 }

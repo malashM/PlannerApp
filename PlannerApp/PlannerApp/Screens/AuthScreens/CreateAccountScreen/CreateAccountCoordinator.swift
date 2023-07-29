@@ -17,7 +17,7 @@ final class CreateAccountCoordinator: Coordinator {
         self.navigationController = navigationController
     }
     
-    func start(_ initialData: Model?) {
+    func start(_ initialData: Model? = nil) {
         let authManager = AuthManager()
         let viewModel = CreateAccountViewModel(authManager: authManager)
         let vc = CreateAccountViewController(coordinator: self, viewModel: viewModel)

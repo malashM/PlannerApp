@@ -43,7 +43,6 @@ final class LoginViewModel: AuthViewModelInterface {
     
     func login() -> Single<AuthDataResult> {
         return authManager.login(email: outputEmail.value, password: outputPassword.value)
-            .flatMap { $0.user.isEmailVerified ? .just($0) : .error(CustomError(Constants.Alert.Messages.verifyEmail)) }
     }
     
     func updateModel(_ data: LoginModel?) {

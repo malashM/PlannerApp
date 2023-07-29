@@ -15,9 +15,8 @@ protocol AuthenticationReading {
 }
 
 protocol AuthenticationWriting {
-    func createUser(email: String, password: String) -> Single<AuthDataResult>
+    func createUser(email: String, password: String, name: String) -> Single<AuthDataResult>
     func login(email: String, password: String) -> Single<AuthDataResult>
-    func sendEmailVerification(for user: User) -> Single<Void>
     func setUserName(for user: User, with name: String) -> Single<Void>
     func resetPassword(for email: String) -> Single<Void>
     func deleteUser(_ user: User) -> Single<Void>
@@ -38,15 +37,13 @@ final class AuthManager: AuthenticationReading, AuthenticationWriting {
     
     var currentUser: User? { auth.currentUser }
     
-    func createUser(email: String, password: String) -> Single<AuthDataResult> {
+    func createUser(email: String, password: String, name: String) -> Single<AuthDataResult> {
         return executeOperation { [weak self] completion in
-            self?.auth.createUser(withEmail: email, password: password) { result, error in
+            self?.auth.createUser(withEmail: email, password: password) { data, error in
                 if let error {
                     completion(.failure(error))
                 } else {
-                    guard let result else { return completion(.failure(CustomError(Constants.Alert.Messages.noUser))) }
-                    result.user.
-                    completion(.success(result))
+                    self?.setUserNameAndSendVerification(data, name, completion)
                 }
             }
         }
@@ -59,27 +56,18 @@ final class AuthManager: AuthenticationReading, AuthenticationWriting {
                     completion(.failure(error))
                 } else {
                     guard let result else { return completion(.failure(CustomError(Constants.Alert.Messages.noUser))) }
-                    
-                    completion(.success(result))
-                }
-            }
-        }
-    }
-    
-    func sendEmailVerification(for user: User) -> Single<Void> {
-        return executeOperation { completion in
-            user.sendEmailVerification() { error in
-                if let error {
-                    completion(.failure(error))
-                } else {
-                    completion(.success(()))
+                    result.user.isEmailVerified
+                    ? completion(.success(result))
+                    : completion(.failure(CustomError(Constants.Alert.Messages.verifyEmail)))
                 }
             }
         }
     }
     
     func setUserName(for user: User, with name: String) -> Single<Void> {
-        return executeOperation { [weak self] result in self?.setUserName(for: user, with: name, result) }
+        return executeOperation { [weak self] result in
+            self?.setUserName(for: user, with: name, result)
+        }
     }
     
     func resetPassword(for email: String) -> Single<Void> {
@@ -109,10 +97,8 @@ final class AuthManager: AuthenticationReading, AuthenticationWriting {
     
     func logOut() -> Single<Void> {
         return executeOperation { [weak self] completion in
-            guard let self else {
-                return completion(.failure(CustomError("\(String(describing: self)) has been deallocated.")))
-            }
             do {
+                guard let self else { throw CustomError("\(String(describing: self)) has been deallocated.") }
                 try self.auth.signOut()
                 completion(.success(()))
             } catch {
@@ -121,31 +107,20 @@ final class AuthManager: AuthenticationReading, AuthenticationWriting {
         }
     }
     
-    deinit {
-        print("----->deinit: \(String(describing: self))")
-    }
-    
 }
 
 
 //MARK: - Private Methods
 private extension AuthManager {
     
-    typealias Completion<T> = (@escaping (Result<T, Error>) -> Void) -> Void
+    typealias Completion<T> = (Result<T, Error>) -> Void
     
-    func executeOperation<T>(_ operation: @escaping Completion<T>) -> Single<T> {
+    func executeOperation<T>(_ operation: @escaping (@escaping Completion<T>) -> Void) -> Single<T> {
         return Single.deferred {
             return Single.create { [weak self] single in
-                guard let self else {
-                    single(.failure(CustomError("\(String(describing: self)) has been deallocated.")))
-                    return Disposables.create()
-                }
-                self.loadingProcess.accept(true)
-                print("----> loadingProcess.accept(true)")
+                self?.loadingProcess.accept(true)
                 operation { [weak self] result in
-                    defer { self?.loadingProcess.accept(false)
-                        print("----> loadingProcess.accept(false)")
-                    }
+                    defer { self?.loadingProcess.accept(false) }
                     switch result {
                     case .success(let data):
                         single(.success(data))
@@ -158,7 +133,11 @@ private extension AuthManager {
         }
     }
     
-    func setUserName(for user: User, with name: String, _ completion: @escaping (Result<Void, Error>) -> Void) {
+    func setUserName(
+        for user: User,
+        with name: String,
+        _ completion: @escaping Completion<Void>
+    ) {
         let changeRequest = user.createProfileChangeRequest()
         changeRequest.displayName = name
         changeRequest.commitChanges() { error in
@@ -166,6 +145,28 @@ private extension AuthManager {
                 completion(.failure(error))
             } else {
                 completion(.success(()))
+            }
+        }
+    }
+    
+    func setUserNameAndSendVerification(
+        _ data: AuthDataResult?,
+        _ name: String,
+        _ completion: @escaping Completion<AuthDataResult>
+    ) {
+        guard let data else { return completion(.failure(CustomError(Constants.Alert.Messages.noUser))) }
+        setUserName(for: data.user, with: name) { result in
+            switch result {
+            case .success:
+                data.user.sendEmailVerification() { error in
+                    if let error = error {
+                        completion(.failure(error))
+                    } else {
+                        completion(.success((data)))
+                    }
+                }
+            case .failure(let error):
+                completion(.failure(error))
             }
         }
     }

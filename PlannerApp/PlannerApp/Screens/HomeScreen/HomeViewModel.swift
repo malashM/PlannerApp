@@ -25,5 +25,10 @@ final class HomeViewModel: AuthViewModelInterface {
         return authManager.logOut()
     }
     
+    func deleteAccount() -> Single<Void> {
+        guard let user = authManager.currentUser else { return .error(CustomError(Constants.Alert.Messages.noUser)) }
+        return authManager.deleteUser(user)
+    }
+    
     func loadData() { }
 }

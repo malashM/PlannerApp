@@ -17,7 +17,7 @@ final class LoginCoordinator: Coordinator {
         self.navigationController = navigationController
     }
     
-    func start(_ initialData: Model?) {
+    func start(_ initialData: Model? = nil) {
         let authManager = AuthManager()
         let viewModel = LoginViewModel(authManager: authManager, model: initialData as? LoginModel)
         let vc = LoginViewController(coordinator: self, viewModel: viewModel)
@@ -27,7 +27,7 @@ final class LoginCoordinator: Coordinator {
     func goToHomeScreen() {
         let homeCoordinator = HomeCoordinator(navigationController: navigationController)
         let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
-        homeCoordinator.start(nil)
+        homeCoordinator.start()
         sceneDelegate?.coordinator = homeCoordinator
     }
     

@@ -34,16 +34,25 @@ private extension ResetPasswordViewController {
         resetPasswordButton.setTitle(Constants.ButtonTitles.resetPassword, for: .normal)
     }
     
-    func handlerResetPassword() {
+    func validAndresetPassword() {
+        if viewModel.isValidEmail(emailTextField.text) {
+            resetPassword()
+        } else {
+            emailTextField.becomeFirstResponder()
+            showInfoAlert(title: Titles.errorResetPassword, message: Messages.invalidEmail)
+        }
+    }
+    
+    func resetPassword() {
         viewModel.resetPassword()
             .observe(on: MainScheduler.instance)
             .subscribe { [weak self] result in
                 switch result {
                 case .success(_):
-                    let title = Titles.success
-                    let message = Messages.successResetPassword
-                    let model = self?.viewModel.generateModel()
-                    self?.showInfoAlert(title: title, message: message) { self?.coordinator.backToLoginScreen(with: model) }
+                    self?.showInfoAlert(title: Titles.success, message: Messages.successResetPassword) {
+                        let model = self?.viewModel.generateModel()
+                        self?.coordinator.backToLoginScreen(with: model)
+                    }
                 case .failure(let error):
                     self?.showInfoAlert(title: Titles.errorResetPassword, message: error.localizedDescription)
                 }
@@ -59,7 +68,9 @@ private extension ResetPasswordViewController {
         viewModel.bindInputs(email: emailTextField.rx.text.orEmpty, using: disposeBag)
         
         viewModel.isLoading
-            .drive(with: self) { sself, isLoading in sself.blockUI(isLoading) }
+            .drive(with: self) { sself, isLoading in
+                sself.blockUI(isLoading)
+            }
             .disposed(by: disposeBag)
         
         viewModel.allowResetPassword
@@ -69,19 +80,16 @@ private extension ResetPasswordViewController {
     }
     
     func bindUserInteractions() {
-        resetPasswordButton.rx.bindAction(using: disposeBag) { [weak self] in
-            guard let self else { return }
-            self.handlerResetPassword()
-        }
-        
-        emailTextField.rx.bindAction(using: disposeBag) { [weak self] in
-            guard let self else { return }
-            if self.viewModel.isValidEmail(self.emailTextField.text) {
-                self.handlerResetPassword()
-            } else {
-                self.emailTextField.becomeFirstResponder()
-                self.showInfoAlert(title: Titles.errorResetPassword, message: Messages.invalidEmail)
+        resetPasswordButton
+            .rx
+            .bindAction(using: disposeBag) { [weak self] in
+                self?.resetPassword()
             }
-        }
+        
+        emailTextField
+            .rx
+            .bindAction(using: disposeBag) { [weak self] in
+                self?.validAndresetPassword()
+            }
     }
 }

@@ -52,15 +52,14 @@ private extension CreateAccountViewController {
     
     func createUser() {
         viewModel.createUser()
-            .debug("---->")
             .observe(on: MainScheduler.instance)
             .subscribe { [weak self] result in
                 switch result {
                 case .success(_):
-                    let title = Titles.successCreateUser
-                    let message = Messages.successCreateUser
-                    let model = self?.viewModel.generateModel()
-                    self?.showInfoAlert(title: title, message: message) { self?.coordinator.goToLoginScreen(with: model) }
+                    self?.showInfoAlert(title: Titles.successCreateUser, message: Messages.successCreateUser) {
+                        let model = self?.viewModel.generateModel()
+                        self?.coordinator.goToLoginScreen(with: model)
+                    }
                 case .failure(let error):
                     self?.showInfoAlert(title: Titles.errorCreateUser, message: error.localizedDescription)
                 }
@@ -83,7 +82,9 @@ private extension CreateAccountViewController {
         )
         
         viewModel.isLoading
-            .drive(with: self) { sself, isLoading in sself.blockUI(isLoading) }
+            .drive(with: self) { sself, isLoading in
+                sself.blockUI(isLoading)
+            }
             .disposed(by: disposeBag)
         
         viewModel.allowCreateUser
@@ -93,25 +94,29 @@ private extension CreateAccountViewController {
     }
     
     func bindUserInteractions() {
-        createButton.rx.bindAction(using: disposeBag) { [weak self] in
-            guard let self else { return }
-            self.createUser()
-        }
+        createButton
+            .rx
+            .bindAction(using: disposeBag) { [weak self] in
+                self?.createUser()
+            }
         
-        userNameTextField.rx.bindAction(using: disposeBag) { [weak self] in
-            guard let self else { return }
-            self.emailTextField.becomeFirstResponder()
-        }
+        userNameTextField
+            .rx
+            .bindAction(using: disposeBag) { [weak self] in
+                self?.emailTextField.becomeFirstResponder()
+            }
         
-        emailTextField.rx.bindAction(using: disposeBag) { [weak self] in
-            guard let self else { return }
-            self.newPasswordTextField.becomeFirstResponder()
-        }
+        emailTextField
+            .rx
+            .bindAction(using: disposeBag) { [weak self] in
+                self?.newPasswordTextField.becomeFirstResponder()
+            }
         
-        newPasswordTextField.rx.bindAction(using: disposeBag) { [weak self] in
-            guard let self else { return }
-            self.validateAndCreateUser()
-        }
+        newPasswordTextField
+            .rx
+            .bindAction(using: disposeBag) { [weak self] in
+                self?.validateAndCreateUser()
+            }
     }
     
 }

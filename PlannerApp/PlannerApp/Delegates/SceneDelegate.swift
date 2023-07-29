@@ -51,12 +51,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 private extension SceneDelegate {
     func configureScene(with windowScene: UIWindowScene) {
+        let user = AuthManager().currentUser
         let navController = UINavigationController()
-        self.coordinator = MainCoordinator(navigationController: navController)
-        self.coordinator?.start(nil)
-        self.window = UIWindow(windowScene: windowScene)
-        self.window?.rootViewController = navController
-        self.window?.makeKeyAndVisible()
+        window = UIWindow(windowScene: windowScene)
+        window?.rootViewController = navController
+        window?.makeKeyAndVisible()
+        coordinator = user == nil
+        ? MainCoordinator(navigationController: navController)
+        : HomeCoordinator(navigationController: navController)
+        coordinator?.start(nil)
     }
 }
 

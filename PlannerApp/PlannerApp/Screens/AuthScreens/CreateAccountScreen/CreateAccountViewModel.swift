@@ -42,14 +42,11 @@ final class CreateAccountViewModel: AuthViewModelInterface {
     }
     
     func createUser() -> Single<AuthDataResult> {
-        return authManager
-            .createUser(email: outputEmail.value, password: outputPassword.value)
-            .flatMap { [weak self] result in
-                guard let self else { return .error(CustomError(Constants.Alert.Messages.unknowError)) }
-                return self.authManager
-                    .setUserName(for: result.user, with: self.outputName.value)
-                    .flatMap { self.authManager.sendEmailVerification(for: result.user).map{ result } }
-            }
+        return authManager.createUser(
+            email: outputEmail.value,
+            password: outputPassword.value,
+            name: outputName.value
+        )
     }
     
     func generateModel() -> LoginModel {

@@ -17,7 +17,7 @@ final class ResetPasswordCoordinator: Coordinator {
         self.navigationController = navigationController
     }
     
-    func start(_ initialData: Model?) {
+    func start(_ initialData: Model? = nil) {
         let authManager = AuthManager()
         let viewModel = ResetPasswordViewModel(authManager: authManager)
         let vc = ResetPasswordViewController(coordinator: self, viewModel: viewModel)

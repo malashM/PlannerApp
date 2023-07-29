@@ -37,7 +37,16 @@ private extension LoginViewController {
         forgotPasswordButton.setTitle(Constants.ButtonTitles.forgotPassword, for: .normal)
     }
     
-    func handlerLogin() {
+    func validateAndLogin() {
+        if viewModel.isValidEmail(emailTextField.text) {
+            login()
+        } else {
+            emailTextField.becomeFirstResponder()
+            showInfoAlert(title: Titles.errorLogin, message: Messages.invalidEmail)
+        }
+    }
+    
+    func login() {
         viewModel.login()
             .observe(on: MainScheduler.instance)
             .subscribe { [weak self] result in
@@ -71,7 +80,9 @@ private extension LoginViewController {
         )
         
         viewModel.isLoading
-            .drive(with: self) { sself, isLoading in sself.blockUI(isLoading) }
+            .drive(with: self) { sself, isLoading in
+                sself.blockUI(isLoading)
+            }
             .disposed(by: disposeBag)
         
         viewModel.allowLogin
@@ -80,29 +91,28 @@ private extension LoginViewController {
     }
     
     func bindUserInteractions() {
-        logInButton.rx.bindAction(using: disposeBag) { [weak self] in
-            guard let self else { return }
-            self.handlerLogin()
+        logInButton
+            .rx
+            .bindAction(using: disposeBag) { [weak self] in
+            self?.login()
         }
         
-        forgotPasswordButton.rx.bindAction(using: disposeBag) { [weak self] in
-            guard let self else { return }
-            self.coordinator.goToResetPasswordScreen()
+        forgotPasswordButton
+            .rx
+            .bindAction(using: disposeBag) { [weak self] in
+            self?.coordinator.goToResetPasswordScreen()
         }
         
-        emailTextField.rx.bindAction(using: disposeBag) { [weak self] in
-            guard let self else { return }
-            self.passwordTextField.becomeFirstResponder()
+        emailTextField
+            .rx
+            .bindAction(using: disposeBag) { [weak self] in
+            self?.passwordTextField.becomeFirstResponder()
         }
         
-        passwordTextField.rx.bindAction(using: disposeBag) { [weak self] in
-            guard let self else { return }
-            if self.viewModel.isValidEmail(self.emailTextField.text) {
-                self.handlerLogin()
-            } else {
-                self.emailTextField.becomeFirstResponder()
-                self.showInfoAlert(title: Titles.errorLogin, message: Messages.invalidEmail)
-            }
+        passwordTextField
+            .rx
+            .bindAction(using: disposeBag) { [weak self] in
+            self?.validateAndLogin()
         }
     }
     

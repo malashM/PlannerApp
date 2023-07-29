@@ -54,9 +54,10 @@ private extension BaseViewController {
 //MARK: Binding
 private extension BaseViewController {
     func bind() {
-        tapGesture.rx.bindAction(using: disposeBag) { [weak self] in
-            guard let self else { return }
-            self.view.endEditing(true)
+        tapGesture
+            .rx
+            .bindAction(using: disposeBag) { [weak self] in
+            self?.view.endEditing(true)
         }
     }
 }

@@ -9,6 +9,14 @@ import Foundation
 
 struct Constants {
     
+    struct Images {
+        struct System {
+            static let person = "person.crop.circle.fill"
+            static let burger = "line.horizontal.3"
+            static let settings = "gearshape.fill"
+        }
+    }
+    
     struct Alert {
         struct Titles {
             static let errorLogin = "Could not Log In"
@@ -17,6 +25,7 @@ struct Constants {
             static let errorCreateUser = "Could not Create User"
             static let successCreateUser = "User created successfully"
             static let success = "Success"
+            static let error = "Error"
         }
         
         struct Messages {
@@ -29,11 +38,15 @@ struct Constants {
             static let successDeleteUser = "User deleted successfully."
             static let noUser = "No current user."
             static let unknowError = "Unknow Error."
+            static let deleteAcc = "Once your account has been deleted, you will not be able to restore it.\nAre you sure you want to continue?"
         }
     }
     
     struct ButtonTitles {
         static let okTitle = "Ok"
+        static let cancel = "Cancel"
+        static let delete = "Delete"
+        static let deleteAccount = "Delete Account"
         static let login = "Log In"
         static let logOut = "Log Out"
         static let forgotPassword = "Forgot Password?"
