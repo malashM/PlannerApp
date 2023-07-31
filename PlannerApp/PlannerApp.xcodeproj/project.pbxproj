@@ -46,6 +46,8 @@
 		90D8E7BC2A69966A0043312D /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90D8E7BB2A69966A0043312D /* LoginModel.swift */; };
 		90D8E7C02A6A87540043312D /* CustomError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90D8E7BF2A6A87540043312D /* CustomError.swift */; };
 		90D8E7C22A6AA3CE0043312D /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90D8E7C12A6AA3CE0043312D /* Model.swift */; };
+		90FCC9B22A7679FF0017D592 /* FirestoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90FCC9B12A7679FF0017D592 /* FirestoreManager.swift */; };
+		90FCC9B62A76B31B0017D592 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90FCC9B52A76B31B0017D592 /* UserModel.swift */; };
 		D9B63A9CC65D740ED5ADE913 /* Pods_PlannerApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 180CA36EB1FEB9A80EC4E315 /* Pods_PlannerApp.framework */; };
 /* End PBXBuildFile section */
 
@@ -93,6 +95,8 @@
 		90D8E7BB2A69966A0043312D /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
 		90D8E7BF2A6A87540043312D /* CustomError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomError.swift; sourceTree = "<group>"; };
 		90D8E7C12A6AA3CE0043312D /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		90FCC9B12A7679FF0017D592 /* FirestoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreManager.swift; sourceTree = "<group>"; };
+		90FCC9B52A76B31B0017D592 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		E0BD19DAF0547A81D5C18BD5 /* Pods-PlannerApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlannerApp.debug.xcconfig"; path = "Target Support Files/Pods-PlannerApp/Pods-PlannerApp.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -146,6 +150,7 @@
 		90D8E73C2A6547630043312D /* PlannerApp */ = {
 			isa = PBXGroup;
 			children = (
+				90FCC9B42A76B3050017D592 /* Models */,
 				90D8E7552A655F5E0043312D /* Basic */,
 				90D8E7522A6548650043312D /* Delegates */,
 				90D8E77A2A66A7230043312D /* Extensions */,
@@ -338,6 +343,7 @@
 			isa = PBXGroup;
 			children = (
 				90D8E7B52A693BA20043312D /* AuthManager.swift */,
+				90FCC9B12A7679FF0017D592 /* FirestoreManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -356,6 +362,14 @@
 				90D8E7B92A6945D10043312D /* AuthViewModel.swift */,
 			);
 			path = Auth;
+			sourceTree = "<group>";
+		};
+		90FCC9B42A76B3050017D592 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				90FCC9B52A76B31B0017D592 /* UserModel.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -488,6 +502,7 @@
 				90D8E76B2A6584910043312D /* ViewModel.swift in Sources */,
 				90D8E7952A66C6630043312D /* CreateAccountCoordinator.swift in Sources */,
 				90D8E7762A6693810043312D /* BasicViewController.swift in Sources */,
+				90FCC9B62A76B31B0017D592 /* UserModel.swift in Sources */,
 				90D8E7AB2A67EB370043312D /* Validatable.swift in Sources */,
 				90D8E7B62A693BA20043312D /* AuthManager.swift in Sources */,
 				90D8E7422A6547630043312D /* HomeViewController.swift in Sources */,
@@ -509,6 +524,7 @@
 				90D8E7402A6547630043312D /* SceneDelegate.swift in Sources */,
 				90D8E7AF2A67F3B90043312D /* UIViewController+showAlerts.swift in Sources */,
 				90D8E77C2A66A7620043312D /* RxSwift+bindActions.swift in Sources */,
+				90FCC9B22A7679FF0017D592 /* FirestoreManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

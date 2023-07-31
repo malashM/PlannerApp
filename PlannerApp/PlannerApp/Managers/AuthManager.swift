@@ -56,9 +56,20 @@ final class AuthManager: AuthenticationReading, AuthenticationWriting {
                     completion(.failure(error))
                 } else {
                     guard let result else { return completion(.failure(CustomError(Constants.Alert.Messages.noUser))) }
-                    result.user.isEmailVerified
-                    ? completion(.success(result))
-                    : completion(.failure(CustomError(Constants.Alert.Messages.verifyEmail)))
+                    let user = result.user
+                    if user.isEmailVerified {
+                        let store = FirestoreManager<UserModel>()
+                        let model = UserModel(name: user.displayName ?? "", email: email)
+                        store.add(id: user.uid, model) { error in
+                            if let error {
+                                completion(.failure(error))
+                            } else {
+                                completion(.success(result))
+                            }
+                        }
+                    } else {
+                        completion(.failure(CustomError(Constants.Alert.Messages.verifyEmail)))
+                    }
                 }
             }
         }
@@ -84,14 +95,20 @@ final class AuthManager: AuthenticationReading, AuthenticationWriting {
     
     func deleteUser(_ user: User) -> Single<Void> {
         return executeOperation { completion in
-            user.delete { error in
+            let store = FirestoreManager<UserModel>()
+            store.delete(id: user.uid) { error in
                 if let error {
                     completion(.failure(error))
                 } else {
-                    completion(.success(()))
+                    user.delete { error in
+                        if let error {
+                            completion(.failure(error))
+                        } else {
+                            completion(.success(()))
+                        }
+                    }
                 }
             }
-            
         }
     }
     

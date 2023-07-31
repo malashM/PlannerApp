@@ -8,7 +8,7 @@
 import Foundation
 
 struct LoginModel: Model {
-    
+    var objectId: String = ""
     var email: String?
     var password: String?
     

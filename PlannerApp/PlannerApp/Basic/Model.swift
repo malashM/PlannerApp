@@ -7,6 +7,7 @@
 
 import Foundation
 
-protocol Model {
+protocol Model: Codable {
     
+    var objectId: String { get }
 }
