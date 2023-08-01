@@ -17,6 +17,7 @@ final class HomeViewController: BaseViewController<HomeViewModel, HomeCoordinato
         super.viewDidLoad()
         configureUI()
         bindViewModel()
+        fetchUser()
     }
     
 }
@@ -25,7 +26,6 @@ final class HomeViewController: BaseViewController<HomeViewModel, HomeCoordinato
 //MARK: - Configure
 private extension HomeViewController {
     func configureUI() {
-        title = viewModel.currentUser?.displayName
         let image = UIImage(systemName: Constants.Images.System.burger)
         let item = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(tapRightBarButtonItem(_:)))
         navigationItem.rightBarButtonItem = item
@@ -36,6 +36,18 @@ private extension HomeViewController {
             UIAlertAction(title: ButtonTitle.logOut, style: .default) { [weak self ] _ in self?.logOut() },
             UIAlertAction(title: ButtonTitle.deleteAccount, style: .destructive) { [weak self ] _ in self?.deleteAccount() }
         ]
+    }
+    
+    func fetchUser() {
+        viewModel.fetchCurrentUser()
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self) { sself, model in
+                guard let model else { return }
+                sself.title = model.name
+            } onFailure: { sself, error in
+                sself.showInfoAlert(title: AlertTitle.error, message: error.localizedDescription)
+            }
+            .disposed(by: disposeBag)
     }
     
     func logOut() {

@@ -29,9 +29,17 @@ final class FirestoreManager<T: Model> {
                 document = collection.document()
             }
             dictionary["objectId"] = document.documentID
-            document.setData(dictionary, completion: completion)
+            document.setData(dictionary) { error in
+                completion(error)
+                if let error {
+                    Logger.log(.warning, message: error.localizedDescription)
+                } else {
+                    Logger.log(.info, message: "Document: \(String(describing: T.self)) added successfully")
+                }
+            }
         } catch {
             completion(error)
+            Logger.log(.warning, message: error.localizedDescription)
         }
     }
     
@@ -39,6 +47,7 @@ final class FirestoreManager<T: Model> {
         collection.document(id).getDocument { snapshot, error in
             if let error {
                 completion(.failure(error))
+                Logger.log(.warning, message: error.localizedDescription)
             } else {
                 guard let data = snapshot?.data() else { return completion(.success(nil)) }
                 let decoder = JSONDecoder()
@@ -46,9 +55,10 @@ final class FirestoreManager<T: Model> {
                     let json = try JSONSerialization.data(withJSONObject: data)
                     let model = try decoder.decode(T.self, from: json)
                     completion(.success(model))
+                    Logger.log(.info, message: "Document: \(String(describing: T.self)) with id: \(id) got successfully")
                 } catch {
                     completion(.success(nil))
-                    print(error)
+                    Logger.log(.warning, message: error.localizedDescription)
                 }
             }
         }
@@ -58,6 +68,7 @@ final class FirestoreManager<T: Model> {
         collection.getDocuments { snapshot, error in
             if let error {
                 completion(.failure(error))
+                Logger.log(.warning, message: error.localizedDescription)
             } else {
                 var models = [T]()
                 let documents = snapshot?.documents ?? []
@@ -68,10 +79,11 @@ final class FirestoreManager<T: Model> {
                         let model = try decoder.decode(T.self, from: json)
                         models.append(model)
                     } catch {
-                        print(error)
+                        Logger.log(.warning, message: error.localizedDescription)
                     }
                 }
                 completion(.success(models))
+                Logger.log(.info, message: "All documents: \(String(describing: T.self)) got successfully")
             }
         }
     }
@@ -82,13 +94,29 @@ final class FirestoreManager<T: Model> {
             let data = try encoder.encode(model)
             let dictionary = try JSONSerialization.jsonObject(with: data) as? [String: Any]
             guard let dictionary else { throw CustomError("Can't encode \(String(describing: data))") }
-            collection.document(model.objectId).updateData(dictionary, completion: completion)
+            collection.document(model.objectId).updateData(dictionary) { error in
+                completion(error)
+                if let error {
+                    Logger.log(.warning, message: error.localizedDescription)
+                } else {
+                    Logger.log(.info, message: "Model: \(model) updated successfully")
+                }
+            }
         } catch {
             completion(error)
+            Logger.log(.warning, message: error.localizedDescription)
         }
     }
     
     func delete(id: String, _ completion: @escaping (Error?) -> Void) {
-        collection.document(id).delete(completion: completion)
+        let document = collection.document(id)
+        document.delete { error in
+            completion(error)
+            if let error {
+                Logger.log(.warning, message: error.localizedDescription)
+            } else {
+                Logger.log(.info, message: "Document: \(document.description) with id: \(id) deleted successfully")
+            }
+        }
     }
 }

@@ -17,9 +17,14 @@ final class HomeViewModel: AuthViewModelInterface {
         self.authManager = authManager
     }
     
-    var isLoading: Driver<Bool> { authManager.isLoading }
+    private let storeManager = FirestoreManager<UserModel>()
+    private let loadingProcess = PublishRelay<Bool>()
     
-    var currentUser: User? { authManager.currentUser }
+    var isLoading: Driver<Bool> {
+        let first = authManager.isLoading
+        let second = loadingProcess.asDriver(onErrorJustReturn: false)
+        return Driver.merge(first, second)
+    }
     
     func logOut() -> Single<Void> {
         return authManager.logOut()
@@ -28,6 +33,23 @@ final class HomeViewModel: AuthViewModelInterface {
     func deleteAccount() -> Single<Void> {
         guard let user = authManager.currentUser else { return .error(CustomError(Constants.Alert.Messages.noUser)) }
         return authManager.deleteUser(user)
+    }
+    
+    func fetchCurrentUser() -> Single<UserModel?> {
+        guard let id = authManager.currentUser?.uid else { return .never() }
+        return Single.create { [weak self] single in
+            self?.loadingProcess.accept(true)
+            self?.storeManager.get(id: id) { result in
+                defer { self?.loadingProcess.accept(false) }
+                switch result {
+                case .success(let data):
+                    single(.success(data))
+                case .failure(let error):
+                    single(.failure(error))
+                }
+            }
+            return Disposables.create()
+        }
     }
     
     func loadData() { }

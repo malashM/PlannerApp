@@ -31,9 +31,11 @@ final class AuthManager: AuthenticationReading, AuthenticationWriting {
         self.auth = auth
     }
     
-    private let loadingProcess = BehaviorRelay<Bool>(value: false)
+    private let loadingProcess = PublishRelay<Bool>()
     
-    var isLoading: Driver<Bool> { loadingProcess.asDriver() }
+    private let storeManager = FirestoreManager<UserModel>()
+    
+    var isLoading: Driver<Bool> { loadingProcess.asDriver(onErrorJustReturn: false) }
     
     var currentUser: User? { auth.currentUser }
     
@@ -42,6 +44,7 @@ final class AuthManager: AuthenticationReading, AuthenticationWriting {
             self?.auth.createUser(withEmail: email, password: password) { data, error in
                 if let error {
                     completion(.failure(error))
+                    Logger.log(.warning, message: error.localizedDescription)
                 } else {
                     self?.setUserNameAndSendVerification(data, name, completion)
                 }
@@ -54,21 +57,26 @@ final class AuthManager: AuthenticationReading, AuthenticationWriting {
             self?.auth.signIn(withEmail: email, password: password) { result, error in
                 if let error {
                     completion(.failure(error))
+                    Logger.log(.warning, message: error.localizedDescription)
                 } else {
-                    guard let result else { return completion(.failure(CustomError(Constants.Alert.Messages.noUser))) }
+                    guard let result else {
+                        Logger.log(.warning, message: Constants.Alert.Messages.noUser)
+                        return completion(.failure(CustomError(Constants.Alert.Messages.noUser)))
+                    }
                     let user = result.user
                     if user.isEmailVerified {
-                        let store = FirestoreManager<UserModel>()
                         let model = UserModel(name: user.displayName ?? "", email: email)
-                        store.add(id: user.uid, model) { error in
+                        self?.storeManager.add(id: user.uid, model) { error in
                             if let error {
                                 completion(.failure(error))
                             } else {
                                 completion(.success(result))
+                                Logger.log(.info, message: "User: \(user) log in successfully")
                             }
                         }
                     } else {
                         completion(.failure(CustomError(Constants.Alert.Messages.verifyEmail)))
+                        Logger.log(.warning, message: Constants.Alert.Messages.verifyEmail)
                     }
                 }
             }
@@ -86,25 +94,28 @@ final class AuthManager: AuthenticationReading, AuthenticationWriting {
             self?.auth.sendPasswordReset(withEmail: email) { error in
                 if let error {
                     completion(.failure(error))
+                    Logger.log(.warning, message: error.localizedDescription)
                 } else {
                     completion(.success(()))
+                    Logger.log(.info, message: "Reset password to email: \(email) sent successfully")
                 }
             }
         }
     }
     
     func deleteUser(_ user: User) -> Single<Void> {
-        return executeOperation { completion in
-            let store = FirestoreManager<UserModel>()
-            store.delete(id: user.uid) { error in
+        return executeOperation { [weak self] completion in
+            self?.storeManager.delete(id: user.uid) { error in
                 if let error {
                     completion(.failure(error))
                 } else {
                     user.delete { error in
                         if let error {
                             completion(.failure(error))
+                            Logger.log(.warning, message: error.localizedDescription)
                         } else {
                             completion(.success(()))
+                            Logger.log(.info, message: "User: \(user) deleted successfully")
                         }
                     }
                 }
@@ -115,11 +126,12 @@ final class AuthManager: AuthenticationReading, AuthenticationWriting {
     func logOut() -> Single<Void> {
         return executeOperation { [weak self] completion in
             do {
-                guard let self else { throw CustomError("\(String(describing: self)) has been deallocated.") }
-                try self.auth.signOut()
+                try self?.auth.signOut()
                 completion(.success(()))
+                Logger.log(.info, message: "Log out successfully")
             } catch {
                 completion(.failure(error))
+                Logger.log(.warning, message: error.localizedDescription)
             }
         }
     }
@@ -160,8 +172,10 @@ private extension AuthManager {
         changeRequest.commitChanges() { error in
             if let error {
                 completion(.failure(error))
+                Logger.log(.warning, message: error.localizedDescription)
             } else {
                 completion(.success(()))
+                Logger.log(.info, message: "User name: \(name) set successfully")
             }
         }
     }
@@ -171,15 +185,20 @@ private extension AuthManager {
         _ name: String,
         _ completion: @escaping Completion<AuthDataResult>
     ) {
-        guard let data else { return completion(.failure(CustomError(Constants.Alert.Messages.noUser))) }
+        guard let data else {
+            Logger.log(.warning, message: Constants.Alert.Messages.noUser)
+            return completion(.failure(CustomError(Constants.Alert.Messages.noUser)))
+        }
         setUserName(for: data.user, with: name) { result in
             switch result {
             case .success:
                 data.user.sendEmailVerification() { error in
                     if let error = error {
                         completion(.failure(error))
+                        Logger.log(.warning, message: error.localizedDescription)
                     } else {
                         completion(.success((data)))
+                        Logger.log(.info, message: "User: \(data.user) create successfully")
                     }
                 }
             case .failure(let error):

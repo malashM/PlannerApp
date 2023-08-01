@@ -69,6 +69,7 @@ extension BaseViewController {
     func blockUI(_ block: Bool) {
         showOrHideSpinner(block)
         view.subviews.forEach { ($0 as? UIControl)?.isEnabled = !block }
+        Logger.log(.info, message: "UI is bloked: \(block)")
     }
     
     func showOrHideSpinner(_ show: Bool) {
