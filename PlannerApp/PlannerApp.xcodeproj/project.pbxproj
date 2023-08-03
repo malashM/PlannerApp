@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		90C198732A7BB39E00C49D28 /* TaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C198712A7BB39E00C49D28 /* TaskTableViewCell.swift */; };
+		90C198742A7BB39E00C49D28 /* TaskTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 90C198722A7BB39E00C49D28 /* TaskTableViewCell.xib */; };
+		90C198762A7BB42A00C49D28 /* UITableView+register.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C198752A7BB42A00C49D28 /* UITableView+register.swift */; };
+		90C198782A7BC17200C49D28 /* TaskModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C198772A7BC17200C49D28 /* TaskModel.swift */; };
+		90C1987A2A7BDB5200C49D28 /* TaskSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C198792A7BDB5200C49D28 /* TaskSectionModel.swift */; };
 		90D8E73E2A6547630043312D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90D8E73D2A6547630043312D /* AppDelegate.swift */; };
 		90D8E7402A6547630043312D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90D8E73F2A6547630043312D /* SceneDelegate.swift */; };
 		90D8E7422A6547630043312D /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90D8E7412A6547630043312D /* HomeViewController.swift */; };
@@ -55,6 +60,11 @@
 /* Begin PBXFileReference section */
 		180CA36EB1FEB9A80EC4E315 /* Pods_PlannerApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PlannerApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		42DF7655E837E6D51FB4BA1C /* Pods-PlannerApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlannerApp.release.xcconfig"; path = "Target Support Files/Pods-PlannerApp/Pods-PlannerApp.release.xcconfig"; sourceTree = "<group>"; };
+		90C198712A7BB39E00C49D28 /* TaskTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTableViewCell.swift; sourceTree = "<group>"; };
+		90C198722A7BB39E00C49D28 /* TaskTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TaskTableViewCell.xib; sourceTree = "<group>"; };
+		90C198752A7BB42A00C49D28 /* UITableView+register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+register.swift"; sourceTree = "<group>"; };
+		90C198772A7BC17200C49D28 /* TaskModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskModel.swift; sourceTree = "<group>"; };
+		90C198792A7BDB5200C49D28 /* TaskSectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskSectionModel.swift; sourceTree = "<group>"; };
 		90D8E73A2A6547630043312D /* PlannerApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlannerApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		90D8E73D2A6547630043312D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		90D8E73F2A6547630043312D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -129,6 +139,15 @@
 				42DF7655E837E6D51FB4BA1C /* Pods-PlannerApp.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		90C1986A2A7BB30300C49D28 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				90C198712A7BB39E00C49D28 /* TaskTableViewCell.swift */,
+				90C198722A7BB39E00C49D28 /* TaskTableViewCell.xib */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		90D8E7312A6547630043312D = {
@@ -310,6 +329,7 @@
 		90D8E7A12A66F2420043312D /* View */ = {
 			isa = PBXGroup;
 			children = (
+				90C1986A2A7BB30300C49D28 /* Cells */,
 				90D8E7412A6547630043312D /* HomeViewController.swift */,
 				90D8E7A22A66F2640043312D /* HomeViewController.xib */,
 			);
@@ -329,6 +349,7 @@
 			isa = PBXGroup;
 			children = (
 				90D8E7AE2A67F3B90043312D /* UIViewController+showAlerts.swift */,
+				90C198752A7BB42A00C49D28 /* UITableView+register.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -371,6 +392,8 @@
 			isa = PBXGroup;
 			children = (
 				90FCC9B52A76B31B0017D592 /* UserModel.swift */,
+				90C198772A7BC17200C49D28 /* TaskModel.swift */,
+				90C198792A7BDB5200C49D28 /* TaskSectionModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -449,6 +472,7 @@
 				90D8E7902A66C5D90043312D /* CreateAccountViewController.xib in Resources */,
 				90D8E7892A66AF9C0043312D /* MainViewController.xib in Resources */,
 				90D8E7472A6547650043312D /* Assets.xcassets in Resources */,
+				90C198742A7BB39E00C49D28 /* TaskTableViewCell.xib in Resources */,
 				90D8E7542A6556E80043312D /* GoogleService-Info.plist in Resources */,
 				90D8E7A32A66F2640043312D /* HomeViewController.xib in Resources */,
 			);
@@ -503,6 +527,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				90C1987A2A7BDB5200C49D28 /* TaskSectionModel.swift in Sources */,
 				90D8E7782A6699C50043312D /* HomeViewModel.swift in Sources */,
 				90D8E7692A6583530043312D /* ConfigurableViewController.swift in Sources */,
 				90D8E7702A668F1C0043312D /* MainViewController.swift in Sources */,
@@ -510,12 +535,15 @@
 				90D8E7572A655FE80043312D /* Coordinator.swift in Sources */,
 				90D8E7C02A6A87540043312D /* CustomError.swift in Sources */,
 				90D8E75B2A6563F90043312D /* HomeCoordinator.swift in Sources */,
+				90C198732A7BB39E00C49D28 /* TaskTableViewCell.swift in Sources */,
+				90C198782A7BC17200C49D28 /* TaskModel.swift in Sources */,
 				90D8E76B2A6584910043312D /* ViewModel.swift in Sources */,
 				90D8E7952A66C6630043312D /* CreateAccountCoordinator.swift in Sources */,
 				90D8E7762A6693810043312D /* BasicViewController.swift in Sources */,
 				90FCC9B62A76B31B0017D592 /* UserModel.swift in Sources */,
 				90D8E7AB2A67EB370043312D /* Validatable.swift in Sources */,
 				90D8E7B62A693BA20043312D /* AuthManager.swift in Sources */,
+				90C198762A7BB42A00C49D28 /* UITableView+register.swift in Sources */,
 				90D8E7422A6547630043312D /* HomeViewController.swift in Sources */,
 				90D8E7592A6563690043312D /* XibLoadable.swift in Sources */,
 				90D8E79C2A66F1DF0043312D /* ResetPasswordCoordinator.swift in Sources */,

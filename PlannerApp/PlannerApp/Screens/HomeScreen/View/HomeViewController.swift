@@ -7,16 +7,23 @@
 
 import RxSwift
 import RxCocoa
+import RxDataSources
 
 final class HomeViewController: BaseViewController<HomeViewModel, HomeCoordinator> {
+    
+    @IBOutlet private weak var segmentControl: UISegmentedControl!
+    @IBOutlet private weak var tableView: UITableView!
+    @IBOutlet private weak var datePicker: UIDatePicker!
     
     private typealias ButtonTitle = Constants.ButtonTitles
     private typealias AlertTitle = Constants.Alert.Titles
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureTableView()
         configureUI()
         bindViewModel()
+        bindUserInteractions()
         fetchUser()
     }
     
@@ -27,8 +34,24 @@ final class HomeViewController: BaseViewController<HomeViewModel, HomeCoordinato
 private extension HomeViewController {
     func configureUI() {
         let image = UIImage(systemName: Constants.Images.System.burger)
-        let item = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(tapRightBarButtonItem(_:)))
+        let item = UIBarButtonItem(image: image, style: .plain, target: self, action: nil)
         navigationItem.rightBarButtonItem = item
+    }
+    
+    func configureTableView() {
+        tableView.registerCell(TaskTableViewCell.self)
+    }
+    
+    func makeDataSource() -> RxTableViewSectionedReloadDataSource<TaskSectionModel> {
+        return RxTableViewSectionedReloadDataSource<TaskSectionModel>(
+            configureCell: { _, tableView, indexPath, item in
+                let cell = tableView.dequeueCell(TaskTableViewCell.self, for: indexPath)
+                cell?.configure(with: item)
+                return cell ?? UITableViewCell()
+            },
+            titleForHeaderInSection: { dataSource, sectionIndex in
+                return dataSource.sectionModels[sectionIndex].header
+            })
     }
     
     func generateActions() -> [UIAlertAction] {
@@ -84,24 +107,74 @@ private extension HomeViewController {
         present(alert, animated: true)
     }
     
+    func updateActiveTab(_ index: Int) {
+        print(index)
+    }
+    
 }
 
 //MARK: - Binding
 private extension HomeViewController {
     func bindViewModel() {
         viewModel.isLoading
-            .drive(with: self) { sself, isLoading in
-                sself.blockUI(isLoading)
-            }
+            .drive(with: self) { sself, isLoading in sself.blockUI(isLoading) }
+            .disposed(by: disposeBag)
+        
+        viewModel.taskSections
+            .drive(tableView.rx.items(dataSource: makeDataSource()))
+            .disposed(by: disposeBag)
+        
+        viewModel.scrolledDate
+            .distinctUntilChanged()
+            .drive(datePicker.rx.date)
+            .disposed(by: disposeBag)
+        
+        viewModel.scrolledIndexPath
+            .debug()
+            .drive(with: self) { sself, index in sself.tableView.scrollToRow(at: index, at: .top, animated: true) }
             .disposed(by: disposeBag)
     }
-}
-
-//MARK: - Actions
-private extension HomeViewController {
-    @objc func tapRightBarButtonItem(_ sender: UIBarButtonItem) {
-        let actions = generateActions()
-        showBottomSheet(actions: actions)
+    
+    func bindUserInteractions() {
+        navigationItem.rightBarButtonItem?
+            .rx
+            .bindAction(using: disposeBag, action: { [weak self] in
+                guard let self else { return }
+                let actions = self.generateActions()
+                self.showBottomSheet(actions: actions)
+            })
+        
+        segmentControl
+            .rx
+            .bindAction(using: disposeBag) { [weak self] index in
+                guard let self else { return }
+                self.updateActiveTab(index)
+            }
+        
+        tableView
+            .rx
+            .didScroll
+            .asDriver()
+            .drive(with: self) { sself, _ in
+                guard let index = self.tableView.indexPathsForVisibleRows?.first?.section else { return }
+                sself.viewModel.handleVisibleCellIndex(index)
+            }
+            .disposed(by: disposeBag)
+        
+        tableView
+            .rx
+            .modelSelected(TaskModel.self)
+            .asDriver()
+            .drive(with: self) { sself, task in }
+            .disposed(by: disposeBag)
+        
+        datePicker
+            .rx
+            .date
+            .asDriver()
+            .distinctUntilChanged()
+            .drive(with: self) { sself, date in sself.viewModel.handleSelectedDate(date) }
+            .disposed(by: disposeBag)
     }
 }
 
