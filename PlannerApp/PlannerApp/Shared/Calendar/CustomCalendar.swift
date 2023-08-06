@@ -52,5 +52,6 @@ private extension CustomCalendar {
         appearance.titleDefaultColor = .label
         appearance.weekdayTextColor =  .systemBlue
         appearance.headerTitleColor = .systemBlue
+        scope = .month
     }
 }

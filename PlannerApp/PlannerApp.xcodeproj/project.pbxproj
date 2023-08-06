@@ -10,7 +10,8 @@
 		907C61662A7FDFA30065F06B /* CustomCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 907C61652A7FDFA30065F06B /* CustomCalendar.swift */; };
 		907C61682A8001740065F06B /* FSCalendarDelegateProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 907C61672A8001740065F06B /* FSCalendarDelegateProxy.swift */; };
 		907C616A2A8002080065F06B /* RxSwift+FSCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 907C61692A8002080065F06B /* RxSwift+FSCalendar.swift */; };
-		907C616D2A8007660065F06B /* Date+compare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 907C616C2A8007660065F06B /* Date+compare.swift */; };
+		907C616D2A8007660065F06B /* Date+ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 907C616C2A8007660065F06B /* Date+ext.swift */; };
+		907C616F2A803DF30065F06B /* String+ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 907C616E2A803DF30065F06B /* String+ext.swift */; };
 		90C198732A7BB39E00C49D28 /* TaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C198712A7BB39E00C49D28 /* TaskTableViewCell.swift */; };
 		90C198742A7BB39E00C49D28 /* TaskTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 90C198722A7BB39E00C49D28 /* TaskTableViewCell.xib */; };
 		90C198762A7BB42A00C49D28 /* UITableView+register.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C198752A7BB42A00C49D28 /* UITableView+register.swift */; };
@@ -67,7 +68,8 @@
 		907C61652A7FDFA30065F06B /* CustomCalendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCalendar.swift; sourceTree = "<group>"; };
 		907C61672A8001740065F06B /* FSCalendarDelegateProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FSCalendarDelegateProxy.swift; sourceTree = "<group>"; };
 		907C61692A8002080065F06B /* RxSwift+FSCalendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RxSwift+FSCalendar.swift"; sourceTree = "<group>"; };
-		907C616C2A8007660065F06B /* Date+compare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+compare.swift"; sourceTree = "<group>"; };
+		907C616C2A8007660065F06B /* Date+ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+ext.swift"; sourceTree = "<group>"; };
+		907C616E2A803DF30065F06B /* String+ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+ext.swift"; sourceTree = "<group>"; };
 		90C198712A7BB39E00C49D28 /* TaskTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTableViewCell.swift; sourceTree = "<group>"; };
 		90C198722A7BB39E00C49D28 /* TaskTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TaskTableViewCell.xib; sourceTree = "<group>"; };
 		90C198752A7BB42A00C49D28 /* UITableView+register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+register.swift"; sourceTree = "<group>"; };
@@ -161,7 +163,8 @@
 		907C616B2A80074B0065F06B /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
-				907C616C2A8007660065F06B /* Date+compare.swift */,
+				907C616C2A8007660065F06B /* Date+ext.swift */,
+				907C616E2A803DF30065F06B /* String+ext.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -561,6 +564,7 @@
 				90D8E7692A6583530043312D /* ConfigurableViewController.swift in Sources */,
 				907C616A2A8002080065F06B /* RxSwift+FSCalendar.swift in Sources */,
 				90D8E7702A668F1C0043312D /* MainViewController.swift in Sources */,
+				907C616F2A803DF30065F06B /* String+ext.swift in Sources */,
 				90D8E79A2A66F1C90043312D /* ResetPasswordViewController.swift in Sources */,
 				90D8E7572A655FE80043312D /* Coordinator.swift in Sources */,
 				90D8E7C02A6A87540043312D /* CustomError.swift in Sources */,
@@ -588,7 +592,7 @@
 				90D8E76D2A6585010043312D /* LoginViewModel.swift in Sources */,
 				90D8E73E2A6547630043312D /* AppDelegate.swift in Sources */,
 				90FCC9BA2A7831D40017D592 /* Logger.swift in Sources */,
-				907C616D2A8007660065F06B /* Date+compare.swift in Sources */,
+				907C616D2A8007660065F06B /* Date+ext.swift in Sources */,
 				90D8E7642A65789B0043312D /* LoginCoordinator.swift in Sources */,
 				90D8E7BC2A69966A0043312D /* LoginModel.swift in Sources */,
 				90D8E7742A668FBF0043312D /* MainCoordinator.swift in Sources */,

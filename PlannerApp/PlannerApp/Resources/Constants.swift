@@ -75,5 +75,6 @@ struct Constants {
     
     struct HomeScreen {
         static let title = "Home"
+        static let today = "Today"
     }
 }

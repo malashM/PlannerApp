@@ -49,7 +49,7 @@ final class HomeViewModel: AuthViewModelInterface {
                 defer { self?.loadingProcess.accept(false) }
                 switch result {
                 case .success(let data):
-                    let sections = self?.generateSections(using: .day) ?? []
+                    let sections = self?.generateSections(using: .month) ?? []
                     self?.taskSectionsProcess.accept(sections)
                     single(.success(data))
                 case .failure(let error):
@@ -60,10 +60,9 @@ final class HomeViewModel: AuthViewModelInterface {
         }
     }
     
-    func handleVisibleCellIndex(_ index: Int) {
-        let tasks = taskSectionsProcess.value.flatMap { $0.items }
-        guard tasks.count >= index else { return }
-        scrolledDateProcess.accept(tasks[index].reminderDate)
+    func handleDateFromVissibleCell(_ date: Date?) {
+        guard let date else { return }
+        scrolledDateProcess.accept(date)
     }
     
     func handleSelectedDate(_ date: Date) {
@@ -82,24 +81,24 @@ final class HomeViewModel: AuthViewModelInterface {
         let dateFormatter = DateFormatter()
         
         let taskSections = groupedTasks.compactMap { (key, value) -> TaskSectionModel? in
-            var header: String
+            let header: String
             switch style {
             case .day:
-                dateFormatter.setLocalizedDateFormatFromTemplate("yyyyMMMMd")
-                header = calendar.isDateInToday(key) ? "Today" : dateFormatter.string(from: key)
+                dateFormatter.setLocalizedDateFormatFromTemplate(.dayFormat)
+                header = calendar.isDateInToday(key) ? Constants.HomeScreen.today : key.toString(dateFormatter)
             case .week:
-                dateFormatter.setLocalizedDateFormatFromTemplate("yyyyMMMd")
+                dateFormatter.setLocalizedDateFormatFromTemplate(.dayFormat)
                 if let endOfWeek = calendar.date(byAdding: .day, value: 6, to: key) {
-                    header = "\(dateFormatter.string(from: key)) - \(dateFormatter.string(from: endOfWeek))"
+                    header = "\(key.toString(dateFormatter)) - \(endOfWeek.toString(dateFormatter))"
                 } else {
                     return nil
                 }
             case .month:
-                dateFormatter.setLocalizedDateFormatFromTemplate("yyyyMMMM")
-                header = dateFormatter.string(from: key)
+                dateFormatter.setLocalizedDateFormatFromTemplate(.monthFormat)
+                header = key.toString(dateFormatter)
             case .year:
-                dateFormatter.setLocalizedDateFormatFromTemplate("yyyy")
-                header = dateFormatter.string(from: key)
+                dateFormatter.setLocalizedDateFormatFromTemplate(.yearFormat)
+                header = key.toString(dateFormatter)
             }
             return TaskSectionModel(header: header, groupingStyle: style, items: value)
         }
@@ -127,6 +126,10 @@ private extension HomeViewModel {
                              priority: priority,
                              reminderDate: reminderDate,
                              status: status)
+        }
+        
+        randomTasks.sorted { $0.reminderDate > $1.reminderDate }.forEach { model in
+            print(model.reminderDate)
         }
         
         return randomTasks.sorted { $0.reminderDate > $1.reminderDate }
@@ -162,4 +165,12 @@ private extension HomeViewModel {
         
         return sections.sorted { $0.key > $1.key }
     }
+}
+
+private extension String {
+    
+    static let dayFormat = "yyyyMMMMd"
+    static let weekFormat = "yyyyMMMd"
+    static let monthFormat = "yyyyMMMM"
+    static let yearFormat = "yyyy"
 }

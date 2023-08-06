@@ -129,7 +129,6 @@ private extension HomeViewController {
             .drive(with: self) { sself, dates in sself.calendar.setRemainderDates(dates) }
             .disposed(by: disposeBag)
         
-        
         viewModel.scrolledDate
             .distinctUntilChanged()
             .drive(with: self) { sself, date in sself.calendar.select(date, scrollToDate: true) }
@@ -161,8 +160,8 @@ private extension HomeViewController {
             .didScroll
             .asDriver()
             .drive(with: self) { sself, _ in
-                guard let index = self.tableView.indexPathsForVisibleRows?.first?.section else { return }
-                sself.viewModel.handleVisibleCellIndex(index)
+                guard let cell = sself.tableView.visibleCells.first as? TaskTableViewCell else { return }
+                sself.viewModel.handleDateFromVissibleCell(cell.remainderDate)
             }
             .disposed(by: disposeBag)
         
