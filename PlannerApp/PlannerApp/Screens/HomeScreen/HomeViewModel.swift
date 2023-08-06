@@ -67,19 +67,11 @@ final class HomeViewModel: AuthViewModelInterface {
     }
     
     func handleSelectedDate(_ date: Date) {
-        let calendar = Calendar.current
         let sections = taskSectionsProcess.value
-        
         for (sectionIndex, section) in sections.enumerated() {
-            if let rowIndex = section.items.firstIndex(where: { task in
-                let itemDateComponents = calendar.dateComponents([.year, .month, .day], from: task.reminderDate)
-                let selectedDateComponents = calendar.dateComponents([.year, .month, .day], from: date)
-                return itemDateComponents == selectedDateComponents
-            }) {
-                let indexPath = IndexPath(row: rowIndex, section: sectionIndex)
-                scrolledIndexPathProcess.accept(indexPath)
-                return
-            }
+            guard let rowIndex = section.items.firstIndex(where: { $0.reminderDate.isSameDay(as: date) } ) else { continue }
+            let indexPath = IndexPath(row: rowIndex, section: sectionIndex)
+            scrolledIndexPathProcess.accept(indexPath)
         }
     }
     

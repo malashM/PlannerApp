@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		907C61662A7FDFA30065F06B /* CustomCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 907C61652A7FDFA30065F06B /* CustomCalendar.swift */; };
+		907C61682A8001740065F06B /* FSCalendarDelegateProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 907C61672A8001740065F06B /* FSCalendarDelegateProxy.swift */; };
+		907C616A2A8002080065F06B /* RxSwift+FSCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 907C61692A8002080065F06B /* RxSwift+FSCalendar.swift */; };
+		907C616D2A8007660065F06B /* Date+compare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 907C616C2A8007660065F06B /* Date+compare.swift */; };
 		90C198732A7BB39E00C49D28 /* TaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C198712A7BB39E00C49D28 /* TaskTableViewCell.swift */; };
 		90C198742A7BB39E00C49D28 /* TaskTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 90C198722A7BB39E00C49D28 /* TaskTableViewCell.xib */; };
 		90C198762A7BB42A00C49D28 /* UITableView+register.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C198752A7BB42A00C49D28 /* UITableView+register.swift */; };
@@ -60,6 +64,10 @@
 /* Begin PBXFileReference section */
 		180CA36EB1FEB9A80EC4E315 /* Pods_PlannerApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PlannerApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		42DF7655E837E6D51FB4BA1C /* Pods-PlannerApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlannerApp.release.xcconfig"; path = "Target Support Files/Pods-PlannerApp/Pods-PlannerApp.release.xcconfig"; sourceTree = "<group>"; };
+		907C61652A7FDFA30065F06B /* CustomCalendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCalendar.swift; sourceTree = "<group>"; };
+		907C61672A8001740065F06B /* FSCalendarDelegateProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FSCalendarDelegateProxy.swift; sourceTree = "<group>"; };
+		907C61692A8002080065F06B /* RxSwift+FSCalendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RxSwift+FSCalendar.swift"; sourceTree = "<group>"; };
+		907C616C2A8007660065F06B /* Date+compare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+compare.swift"; sourceTree = "<group>"; };
 		90C198712A7BB39E00C49D28 /* TaskTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTableViewCell.swift; sourceTree = "<group>"; };
 		90C198722A7BB39E00C49D28 /* TaskTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TaskTableViewCell.xib; sourceTree = "<group>"; };
 		90C198752A7BB42A00C49D28 /* UITableView+register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+register.swift"; sourceTree = "<group>"; };
@@ -139,6 +147,23 @@
 				42DF7655E837E6D51FB4BA1C /* Pods-PlannerApp.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		907C61642A7FDF710065F06B /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+				907C61652A7FDFA30065F06B /* CustomCalendar.swift */,
+				907C61672A8001740065F06B /* FSCalendarDelegateProxy.swift */,
+			);
+			path = Calendar;
+			sourceTree = "<group>";
+		};
+		907C616B2A80074B0065F06B /* Foundation */ = {
+			isa = PBXGroup;
+			children = (
+				907C616C2A8007660065F06B /* Date+compare.swift */,
+			);
+			path = Foundation;
 			sourceTree = "<group>";
 		};
 		90C1986A2A7BB30300C49D28 /* Cells */ = {
@@ -282,6 +307,7 @@
 		90D8E77A2A66A7230043312D /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				907C616B2A80074B0065F06B /* Foundation */,
 				90D8E7B12A67F4D60043312D /* RxSwift */,
 				90D8E7B02A67F4B90043312D /* UIKit */,
 			);
@@ -358,6 +384,7 @@
 			isa = PBXGroup;
 			children = (
 				90D8E77B2A66A7620043312D /* RxSwift+bindActions.swift */,
+				907C61692A8002080065F06B /* RxSwift+FSCalendar.swift */,
 			);
 			path = RxSwift;
 			sourceTree = "<group>";
@@ -374,6 +401,7 @@
 		90D8E7B72A6945960043312D /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				907C61642A7FDF710065F06B /* Calendar */,
 				90FCC9B82A7831B20017D592 /* Logger */,
 				90D8E7B82A6945B40043312D /* Auth */,
 			);
@@ -527,9 +555,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				907C61682A8001740065F06B /* FSCalendarDelegateProxy.swift in Sources */,
 				90C1987A2A7BDB5200C49D28 /* TaskSectionModel.swift in Sources */,
 				90D8E7782A6699C50043312D /* HomeViewModel.swift in Sources */,
 				90D8E7692A6583530043312D /* ConfigurableViewController.swift in Sources */,
+				907C616A2A8002080065F06B /* RxSwift+FSCalendar.swift in Sources */,
 				90D8E7702A668F1C0043312D /* MainViewController.swift in Sources */,
 				90D8E79A2A66F1C90043312D /* ResetPasswordViewController.swift in Sources */,
 				90D8E7572A655FE80043312D /* Coordinator.swift in Sources */,
@@ -538,6 +568,7 @@
 				90C198732A7BB39E00C49D28 /* TaskTableViewCell.swift in Sources */,
 				90C198782A7BC17200C49D28 /* TaskModel.swift in Sources */,
 				90D8E76B2A6584910043312D /* ViewModel.swift in Sources */,
+				907C61662A7FDFA30065F06B /* CustomCalendar.swift in Sources */,
 				90D8E7952A66C6630043312D /* CreateAccountCoordinator.swift in Sources */,
 				90D8E7762A6693810043312D /* BasicViewController.swift in Sources */,
 				90FCC9B62A76B31B0017D592 /* UserModel.swift in Sources */,
@@ -557,6 +588,7 @@
 				90D8E76D2A6585010043312D /* LoginViewModel.swift in Sources */,
 				90D8E73E2A6547630043312D /* AppDelegate.swift in Sources */,
 				90FCC9BA2A7831D40017D592 /* Logger.swift in Sources */,
+				907C616D2A8007660065F06B /* Date+compare.swift in Sources */,
 				90D8E7642A65789B0043312D /* LoginCoordinator.swift in Sources */,
 				90D8E7BC2A69966A0043312D /* LoginModel.swift in Sources */,
 				90D8E7742A668FBF0043312D /* MainCoordinator.swift in Sources */,

@@ -15,4 +15,7 @@ target 'PlannerApp' do
   pod 'RxCocoa'
   pod 'RxDataSources'
 
+  # Calendar
+  pod 'FSCalendar'
+
 end

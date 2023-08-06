@@ -13,7 +13,7 @@ final class HomeViewController: BaseViewController<HomeViewModel, HomeCoordinato
     
     @IBOutlet private weak var segmentControl: UISegmentedControl!
     @IBOutlet private weak var tableView: UITableView!
-    @IBOutlet private weak var datePicker: UIDatePicker!
+    @IBOutlet private weak var calendar: CustomCalendar!
     
     private typealias ButtonTitle = Constants.ButtonTitles
     private typealias AlertTitle = Constants.Alert.Titles
@@ -124,13 +124,18 @@ private extension HomeViewController {
             .drive(tableView.rx.items(dataSource: makeDataSource()))
             .disposed(by: disposeBag)
         
+        viewModel.taskSections
+            .map { $0.flatMap { $0.items }.map { $0.reminderDate } }
+            .drive(with: self) { sself, dates in sself.calendar.setRemainderDates(dates) }
+            .disposed(by: disposeBag)
+        
+        
         viewModel.scrolledDate
             .distinctUntilChanged()
-            .drive(datePicker.rx.date)
+            .drive(with: self) { sself, date in sself.calendar.select(date, scrollToDate: true) }
             .disposed(by: disposeBag)
         
         viewModel.scrolledIndexPath
-            .debug()
             .drive(with: self) { sself, index in sself.tableView.scrollToRow(at: index, at: .top, animated: true) }
             .disposed(by: disposeBag)
     }
@@ -168,9 +173,9 @@ private extension HomeViewController {
             .drive(with: self) { sself, task in }
             .disposed(by: disposeBag)
         
-        datePicker
+        calendar
             .rx
-            .date
+            .didSelectDate
             .asDriver()
             .distinctUntilChanged()
             .drive(with: self) { sself, date in sself.viewModel.handleSelectedDate(date) }
